@@ -15,9 +15,10 @@ images["invertedpipe"]=pygame.transform.flip(images["pipe"], False, True)
 gen=0
 
 # Load configuration in config variable
-
+config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,neat.DefaultSpeciesSet, neat.DefaultStagnation,'config-feedforward.txt')  
 # Load the model
-
+with open('std1.pkl', 'rb') as file:
+    genome = pickle.load(file)
 
 class Bird:
     bird=pygame.Rect(100,250,30,30)
@@ -62,13 +63,6 @@ class Pipe:
         screen.blit(images["invertedpipe"],self.tpipe)
 
 # Remove the generation and genome loop and only keep game loop
-def eval_fitness(generation, config):
-    global gen
-    genomeCount=0
-    gen = gen+1
-
-    for gid, genome in generation: 
-        genome.fitness = 0 
         
         # Keep these lines of code
         net = neat.nn.FeedForwardNetwork.create(genome, config)
@@ -116,9 +110,6 @@ def eval_fitness(generation, config):
             clock.tick(30)
 
 # Remove following line of code     
-config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,neat.DefaultSpeciesSet, neat.DefaultStagnation,'config-feedforward.txt')  
-p = neat.Population(config)
-winner = p.run(eval_fitness,7) 
 
   
 
